@@ -1,8 +1,10 @@
 <?php
 return [
-    "vimEnable" => true,
+    "vimEnable" => false,
     "windows" => true,
     "plugins" => [
-        // "example"
+        "file-manager",
+        "auth",
+        "tabs"
     ]
 ];

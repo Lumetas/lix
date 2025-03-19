@@ -61,6 +61,7 @@ if (isset($_GET['file'])) {
     <title>LIX</title>
     <style type="text/css">
         body {
+            background-color: #2f3129;
             margin: 0;
             padding: 0;
             display: flex;
@@ -270,14 +271,8 @@ if (isset($_GET['file'])) {
         var fileTree = document.getElementById("file-tree");
         loadFileTree(folder, fileTree);
     </script>
-
-
     %client-after-plugins%
-
 </body>
 
 </html>
-
-
-
 %server-after-plugins%
