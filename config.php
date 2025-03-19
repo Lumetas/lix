@@ -1,5 +1,8 @@
 <?php
 return [
-    "vimEnable" => false,
-    "windows" => true
+    "vimEnable" => true,
+    "windows" => true,
+    "plugins" => [
+        // "example"
+    ]
 ];

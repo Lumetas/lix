@@ -40,4 +40,51 @@ if ($config['windows']){
     $code = str_replace("%path-seperator%", "/", $code);
 }
 
+$plugin_server_before = '<?php';
+$plugin_server_after = '<?php';
+
+$plugin_client_before = '<script>';
+$plugin_client_after = '<script>';
+
+
+if (isset($config['plugins']) && count($config['plugins']) !== 0){
+    foreach ($config['plugins'] as $plugin){
+        $plugin = require "plugins/$plugin/$plugin.lix";
+        if (isset($plugin['server'])){
+            if (isset($plugin['server']['before'])){$plugin_server_before .= "\n\n".$plugin['server']['before'];}
+            if (isset($plugin['server']['after'])){$plugin_server_after .= "\n\n".$plugin['server']['after'];}
+        }
+        if (isset($plugin['client'])){
+            if (isset($plugin['client']['before'])){$plugin_client_before .= "\n\n".$plugin['client']['before'];}
+            if (isset($plugin['client']['after'])){$plugin_client_after .= "\n\n".$plugin['client']['after'];}
+        }
+    }
+
+    $plugin_server_before .= "\n?>";
+    $plugin_server_after .= "\n?>";
+    $plugin_client_before .= "\n</script>";
+    $plugin_client_after .= "\n</script>";
+    $code = str_replace([
+        "%server-before-plugins%",
+        "%server-after-plugins%",
+        "%client-before-plugins%",
+        "%client-after-plugins%"
+    ],
+    [
+        $plugin_server_before,
+        $plugin_server_after,
+        $plugin_client_before,
+        $plugin_client_after
+    ], $code);
+} else {
+    $code = str_replace([
+        "%server-before-plugins%",
+        "%server-after-plugins%",
+        "%client-before-plugins%",
+        "%client-after-plugins%"
+    ],
+    "", $code);
+}
+
+
 file_put_contents('index.php', $code);

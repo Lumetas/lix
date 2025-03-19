@@ -1,4 +1,9 @@
+%server-before-plugins%
+
 <?php
+
+
+
 // Обработка сохранения файла
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
@@ -10,11 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Файл сохранён: " . $filename;
         } else {
             http_response_code(500);
-            echo "Ошибка: не удалось сохранить файл";
+            echo "ERROR";
         }
     } else {
-        http_response_code(400);
-        echo "Ошибка: неверные данные";
+        http_response_code(500);
+        echo "ERROR";
     }
     exit;
 }
@@ -124,6 +129,8 @@ if (isset($_GET['file'])) {
     <script>%mode-javascript%</script>
     <script>%mode-css%</script>
     <script>%theme-monokai%</script>
+    %client-before-plugins%
+
     <script>
         // Инициализация редактора
         pathSeperator = '%path-seperator%';
@@ -136,11 +143,19 @@ if (isset($_GET['file'])) {
         file = '';
         basenameFile = '';
 
+        function renderError(){
+            let title = document.querySelector('title');
+            title.innerText = `ERROR`;
+            setTimeout(() => {
+                title.innerText = basenameFile != '' ? basenameFile : "LIX";
+            }, 700);     
+        }
+
         function renderSaveFile(){
             let title = document.querySelector('title');
-            title.innerText = `<>${basenameFile}`;
+            title.innerText = `<∗>${basenameFile}`;
             setTimeout(() => {
-                title.innerText = basenameFile;
+                title.innerText = basenameFile != '' ? basenameFile : "LIX";
             }, 700);
         }
 
@@ -158,8 +173,13 @@ if (isset($_GET['file'])) {
             })
             .then(response => response.text())
             .then(message => {
-                console.log(message);
-                renderSaveFile();
+                if (message.trim() !== "ERROR"){
+                    console.log(message);
+                    renderSaveFile();
+                } else {
+                    renderError();
+                }
+
             })
             .catch(error => {
                 console.error("Ошибка при сохранении файла:", error);
@@ -213,7 +233,7 @@ if (isset($_GET['file'])) {
                         
                     };
                 }
-                console.log('rendered')
+                // console.log('rendered')
                 parentElement.appendChild(div);
             });
         }
@@ -255,6 +275,14 @@ if (isset($_GET['file'])) {
         var fileTree = document.getElementById("file-tree");
         loadFileTree(folder, fileTree);
     </script>
+
+
+    %client-after-plugins%
+
 </body>
 
 </html>
+
+
+
+%server-after-plugins%

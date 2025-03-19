@@ -1,0 +1,14 @@
+<?php
+
+return [
+    "server" => [
+        "before" => file_get_contents(__DIR__."/server-before.php"),
+        "after" => '//after',
+    ],
+
+    "client" => [
+        "before" => '//before',
+        "after" => file_get_contents(__DIR__."/client-after.js")
+    ]
+
+];
