@@ -1,4 +1,5 @@
 <?php
 return [
-    "vimEnable" => false
+    "vimEnable" => false,
+    "windows" => true
 ];

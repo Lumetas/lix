@@ -34,5 +34,10 @@ $code = str_replace([
 
 ], $code);
 
+if ($config['windows']){
+    $code = str_replace("%path-seperator%", "\\\\", $code);
+} else {
+    $code = str_replace("%path-seperator%", "/", $code);
+}
 
 file_put_contents('index.php', $code);

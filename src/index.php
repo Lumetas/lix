@@ -126,6 +126,7 @@ if (isset($_GET['file'])) {
     <script>%theme-monokai%</script>
     <script>
         // Инициализация редактора
+        pathSeperator = '%path-seperator%';
         var editor = ace.edit("editor");
         
         editor.setTheme("ace/theme/monokai");
@@ -133,6 +134,16 @@ if (isset($_GET['file'])) {
         %layout%
 
         file = '';
+        basenameFile = '';
+
+        function renderSaveFile(){
+            let title = document.querySelector('title');
+            title.innerText = `<>${basenameFile}`;
+            setTimeout(() => {
+                title.innerText = basenameFile;
+            }, 700);
+        }
+
         function saveFile(){
             var filename = file; // Имя файла из аргументов команды
             var content = editor.getValue();
@@ -147,7 +158,8 @@ if (isset($_GET['file'])) {
             })
             .then(response => response.text())
             .then(message => {
-                console.log(message); // Сообщение от сервера
+                console.log(message);
+                renderSaveFile();
             })
             .catch(error => {
                 console.error("Ошибка при сохранении файла:", error);
@@ -184,21 +196,24 @@ if (isset($_GET['file'])) {
                     div.appendChild(contents);
 
                     div.onclick = (e) => {
-                        e.stopPropagation(); // Останавливаем всплытие события
+                        e.stopPropagation();
                         contents.classList.toggle("visible");
                         if (contents.classList.contains("visible")) {
                             loadFileTree(item.path, contents);
                         }
                     };
                 } else {
-                    div.onclick = () => {
+                    div.onclick = (e) => {
+                        e.stopPropagation();
                         file = item.path;
+                        basenameFile = item.path.split(pathSeperator).reverse()[0];
+                        document.querySelector('title').innerText = basenameFile;
                         loadFile(item.path);
                         
                         
                     };
                 }
-
+                console.log('rendered')
                 parentElement.appendChild(div);
             });
         }
