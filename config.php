@@ -7,5 +7,6 @@ return [
         // "auth",
         // "resizable-sidebar",
         // "tabs"
+        // "autocomplete"
     ]
 ];

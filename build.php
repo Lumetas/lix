@@ -17,6 +17,7 @@ if ($config['vimEnable']) {
 });", $code);
 }
 
+
 $code = str_replace([
     "%ace%",
     "%mode-html%",
