@@ -6,7 +6,7 @@ return [
         // "file-manager",
         // "auth",
         // "resizable-sidebar",
-        // "tabs"
-        // "autocomplete"
+        // "tabs",
+        // "autocomplete",
     ]
 ];
