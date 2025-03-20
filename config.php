@@ -3,7 +3,7 @@ return [
     "vimEnable" => false,
     "windows" => true,
     "plugins" => [
-        "file-manager",
+        // "file-manager",
         // "auth",
         // "resizable-sidebar",
         // "tabs"
