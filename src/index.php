@@ -60,6 +60,36 @@ if (isset($_GET['file'])) {
 <head>
     <title>LIX</title>
     <style type="text/css">
+        :root {
+        --monokai-bg: #272822; /* фон */
+        --monokai-scrollbar-thumb: #75715E; /* ползунок */
+        --monokai-scrollbar-track: #3E3D32; /* трек */
+        }
+
+        /* Стилизация скроллбаров для WebKit (Chrome, Edge, Safari) */
+        ::-webkit-scrollbar {
+        width: 8px; /* ширина вертикального скроллбара */
+        height: 8px; /* высота горизонтального скроллбара */
+        }
+
+        ::-webkit-scrollbar-thumb {
+        background-color: var(--monokai-scrollbar-thumb);
+        border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+        background-color: var(--monokai-scrollbar-track);
+        }
+
+        ::-webkit-scrollbar-corner {
+        background-color: var(--monokai-bg);
+        }
+
+        /* Стилизация скроллбаров для Firefox */
+        * {
+        scrollbar-width: thin; /* тонкий скроллбар */
+        scrollbar-color: var(--monokai-scrollbar-thumb) var(--monokai-scrollbar-track);
+        }
         body {
             background-color: #2f3129;
             margin: 0;
@@ -110,7 +140,6 @@ if (isset($_GET['file'])) {
 <body>
     <!-- Боковая панель с деревом директорий -->
     <div id="sidebar">
-        <h3>Files</h3>
         <div id="file-tree"></div>
     </div>
 
@@ -221,9 +250,6 @@ if (isset($_GET['file'])) {
                 } else {
                     div.onclick = (e) => {
                         e.stopPropagation();
-                        file = item.path;
-                        basenameFile = item.path.split(pathSeperator).reverse()[0];
-                        document.querySelector('title').innerText = basenameFile;
                         loadFile(item.path);
                         
                         
@@ -239,9 +265,11 @@ if (isset($_GET['file'])) {
             fetch(`?file=${encodeURIComponent(path)}`)
                 .then(response => response.text())
                 .then(content => {
+                    file = path;
+                    basenameFile = path.split(pathSeperator).reverse()[0];
+                    document.querySelector('title').innerText = basenameFile;
                     editor.setValue(content);
                     setSyntaxMode(path); // Устанавливаем режим подсветки синтаксиса
-                    // document.getElementById("ace_content").focus();
                     editor.focus()
                 })
                 .catch(error => {

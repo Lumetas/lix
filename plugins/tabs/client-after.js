@@ -90,7 +90,7 @@
 
             tabsContainer.appendChild(tabElement);
         });
-        resizeEditor();
+        TabsResizeEditor();
 
 
     }
@@ -107,6 +107,9 @@
         fetch(`?file=${encodeURIComponent(path)}`)
             .then(response => response.text())
             .then(content => {
+                file = path;
+                basenameFile = path.split(pathSeperator).reverse()[0];
+                document.querySelector('title').innerText = basenameFile;
                 editor.setValue(content);
                 setSyntaxMode(path);
             })
@@ -121,7 +124,7 @@
         openFileInTab(path);
         originalLoadFile(path);
     };
-    function resizeEditor() {
+    function TabsResizeEditor() {
         if (tabs.length == 0) {
             document.getElementById('editor').style.position = 'absolute';
             document.getElementById('editor').style.left = document.getElementById('sidebar').offsetWidth + 'px';
@@ -138,6 +141,6 @@
             editor.resize()
         }
     }
-    window.onresize = resizeEditor;
-    resizeEditor();
+    window.onresize = TabsResizeEditor;
+    TabsResizeEditor();
 }

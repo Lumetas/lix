@@ -4,7 +4,8 @@ return [
     "windows" => true,
     "plugins" => [
         "file-manager",
-        "auth",
-        "tabs"
+        // "auth",
+        // "resizable-sidebar",
+        // "tabs"
     ]
 ];
